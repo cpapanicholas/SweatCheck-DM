@@ -1,36 +1,41 @@
 // client/src/components/SendMessageForm.jsx
 
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { SEND_MESSAGE } from '../graphql/mutations';
 
-const SendMessageForm = ({ onSendMessage }) => {
+const SendMessageForm = ({ activeUser }) => {
   const [messageText, setMessageText] = useState('');
+
+  const [sendMessage] = useMutation(SEND_MESSAGE);
 
   const handleInputChange = (e) => {
     setMessageText(e.target.value);
   };
 
-  const handleSendMessage = (e) => {
-    e.preventDefault();
+  const handleSendMessage = () => {
+    sendMessage({
+      variables: {
+        sender: activeUser,
+        recipient: 'recipientUsername', // Replace with the actual recipient username
+        text: messageText,
+      },
+    });
 
-    if (messageText.trim() !== '') {
-      // Call the parent component's function to send the message
-      onSendMessage(messageText);
-
-      // Clear the input field after sending the message
-      setMessageText('');
-    }
+    // Clear the input field after sending the message
+    setMessageText('');
   };
 
   return (
-    <form className="send-message-form" onSubmit={handleSendMessage}>
+    <div className="send-message-form">
       <input
         type="text"
         placeholder="Type your message..."
         value={messageText}
         onChange={handleInputChange}
       />
-      <button type="submit">Send</button>
-    </form>
+      <button onClick={handleSendMessage}>Send</button>
+    </div>
   );
 };
 
