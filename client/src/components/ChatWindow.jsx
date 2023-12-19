@@ -1,23 +1,21 @@
 // client/src/components/ChatWindow.jsx
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_MESSAGES } from '../graphql/queries';
 import MessageList from './MessageList';
 import SendMessageForm from './SendMessageForm';
 
-const ChatWindow = ({ activeUser, onSendMessage }) => {
-  const [messages, setMessages] = useState([]);
 
-  // Dummy data for initial messages (you'll replace this with actual data)
-  const initialMessages = [
-    { id: 1, text: 'Hello!', sender: 'user1' },
-    { id: 2, text: 'Hi there!', sender: 'user2' },
-    // Add more initial messages as needed
-  ];
+const ChatWindow = ({ activeUser, recipientUser }) => {
+  const { loading, error, data } = useQuery(GET_MESSAGES, {
+    variables: { sender: activeUser, recipient: recipientUser },
+  });
 
-  useEffect(() => {
-    // Set initial messages when the component mounts
-    setMessages(initialMessages);
-  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  const messages = data.messages;
 
   const handleSendMessage = (text) => {
     // Create a new message object
