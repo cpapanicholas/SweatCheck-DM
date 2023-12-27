@@ -1,7 +1,7 @@
 // client/src/pages/HomePage.jsx
 
 import React, { useState } from 'react';
-import ChatList from '../components/ChatList';
+import ChatList from '../components/MessageList';
 import ChatWindow from '../components/ChatWindow';
 
 const HomePage = () => {

@@ -1,21 +1,20 @@
-// client/src/components/ChatWindow.jsx
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_MESSAGES } from '../graphql/queries';
 import MessageList from './MessageList';
 import SendMessageForm from './SendMessageForm';
-
 
 const ChatWindow = ({ activeUser, recipientUser }) => {
   const { loading, error, data } = useQuery(GET_MESSAGES, {
     variables: { sender: activeUser, recipient: recipientUser },
   });
 
+  const [messages, setMessages] = useState([]);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const messages = data.messages;
+  const existingMessages = data.messages || [];
 
   const handleSendMessage = (text) => {
     // Create a new message object
@@ -29,12 +28,13 @@ const ChatWindow = ({ activeUser, recipientUser }) => {
     setMessages([...messages, newMessage]);
 
     // Callback to the parent component to handle sending the message to the server
-    onSendMessage(newMessage);
+    // Pass the new message to the callback
+    // onSendMessage(newMessage);
   };
 
   return (
     <div className="chat-window">
-      <MessageList messages={messages} activeUser={activeUser} />
+      <MessageList messages={existingMessages} activeUser={activeUser} />
       <SendMessageForm onSendMessage={handleSendMessage} />
     </div>
   );

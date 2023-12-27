@@ -27,9 +27,9 @@ export const GET_USER_PROFILE = gql`
     userProfile(username: $username) {
       username
       displayName
-      // Add more fields as needed
+      
     }
   }
 `;
 
-// Additional queries can be defined here
+

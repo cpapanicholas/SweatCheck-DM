@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import HomePage from './pages/HomePage';
 import ChatPage from './pages/ChatPage';
 
@@ -7,14 +8,10 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Switch>
-          <Route path="/chat/:recipientUsername">
-            <ChatPage />
-          </Route>
-          <Route path="/">
-            <HomePage />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/chat/:recipientUsername" element={<ChatPage />} />
+          <Route path="/" element={<HomePage />} />
+        </Routes>
       </div>
     </Router>
   );

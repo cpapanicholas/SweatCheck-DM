@@ -1,6 +1,11 @@
 import React from 'react';
 
 const MessageList = ({ messages, activeUser }) => {
+  // Check if messages is undefined before mapping over it
+  if (!messages) {
+    return <p>No messages available</p>;
+  }
+
   return (
     <div className="message-list">
       {messages.map((message) => (
